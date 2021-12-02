@@ -6,7 +6,8 @@ fn main() {
     let instrs = read_input_file().unwrap();
     // println!("{:#?}", instrs);
 
-    let mut cur_pos = Position { depth: 0, h_pos: 0 };
+    let mut cur_pos = Position::default(); // default value for usize & isize is 0
+
     for i in instrs {
         cur_pos.apply_instruction(i)
     }
@@ -14,20 +15,24 @@ fn main() {
     println!("After applying all instructions: {:#?}", cur_pos);
     println!(
         "Product of depth and horizontal pos is: {}",
-        cur_pos.depth * cur_pos.h_pos
+        cur_pos.depth * cur_pos.h_pos as isize
     );
 }
-#[derive(Debug)]
+#[derive(Debug, Default)]
 struct Position {
-    depth: usize,
+    depth: isize,
     h_pos: usize,
+    aim: isize,
 }
 impl Position {
     fn apply_instruction(&mut self, instr: Instruction) {
         match instr {
-            Instruction::Down(d) => self.depth += d,
-            Instruction::Up(d) => self.depth -= d,
-            Instruction::Forward(d) => self.h_pos += d,
+            Instruction::Down(d) => self.aim += d as isize,
+            Instruction::Up(d) => self.aim -= d as isize,
+            Instruction::Forward(d) => {
+                self.h_pos += d;
+                self.depth += self.aim * d as isize;
+            }
         }
     }
 }
