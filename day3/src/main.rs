@@ -3,6 +3,21 @@ use std::fs::File;
 use std::io::{self, prelude::*, BufReader};
 
 fn main() {
+    /*
+        The high level approach is to sum each column, and if it's greater than half the number of rows, then the gamma bit is 1
+        The epsilon bit is just the converse of the gamma binary representation
+
+
+        A few thoughts:
+        1) A struggle to calculate the column sum of the matrix without for loops. the best idea i had was to transpose it, then it'd be easy to map.
+           Transpose code found here https://stackoverflow.com/questions/64498617/how-to-transpose-a-vector-of-vectors-in-rust
+        2) I could probably find the converse of the gamma rate binary with an XOR, but i was too lazy to pad the left bits with 1s, or to shift out and back again. there's probably a good trick here
+
+        3) would it have been easier to parse the inputs as binary numbers? could shift & add LSB in the loop to get sums
+        4) There's probably a more idiomatic way to go from binary rep to decimal, but since i already had it stored in a vec i just did it my way
+
+
+    */
     let inp = read_input_file().unwrap();
     let num_rows = inp.len();
     println!("num_rows: {}", num_rows);
